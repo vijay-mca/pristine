@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   inValidPassword: boolean;
   unUseUserName: boolean;
   unUsePassword: boolean;
+  status: string;
 
   constructor(private http: HttpClient, private router: Router) {
     this.unUseUserName = true;
@@ -71,6 +72,8 @@ export class LoginComponent implements OnInit {
           const { reg_id }: any = res;
           localStorage.setItem('userToken', reg_id);
           this.router.navigate(['/profile']);
+        } else {
+          this.status = status;
         }
       });
   }

@@ -1,6 +1,11 @@
 <div class="container">
     <h1 class="text-center">Login</h1>
     <div class="row">
+        <div class="col-lg-12" *ngIf="status">
+            <div class="alert alert-danger" role="alert">
+                {{status}}
+            </div>
+        </div>
         <div class="col-lg-12">
             <div class="form-group">
                 <label for="username">Username</label>
