@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { API } from 'src/environments/api';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -27,7 +28,7 @@ export class ProfileComponent implements OnInit {
     let options = { headers: headers };
     this.http
       .post<any>(
-        'http://localhost/pristin/API.php',
+        API,
         {
           action: 'My Profile',
           reg_id: reg_id,

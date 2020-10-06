@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { API } from 'src/environments/api';
 
 @Component({
   selector: 'app-login',
@@ -57,7 +58,7 @@ export class LoginComponent implements OnInit {
 
     this.http
       .post<any>(
-        'http://localhost/pristin/API.php',
+        API,
         {
           action: 'Login',
           username: this.userName,
