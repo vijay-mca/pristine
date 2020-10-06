@@ -1,0 +1,16 @@
+<div *ngIf="auth">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <a class="navbar-brand">Pristin</a>
+        <button class="navbar-toggler" (click)="isMenuCollapsed = !isMenuCollapsed">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link"  (click)="logout($event)">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div style="margin-top: 5em;"></div>
+</div>

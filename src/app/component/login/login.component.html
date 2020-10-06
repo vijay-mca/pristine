@@ -1,0 +1,25 @@
+<div class="container">
+    <h1 class="text-center">Login</h1>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input id="userName" class="form-control" type="text" name="userName" placeholder="Username"
+                    value="{{userName}}" (keyup)="onKeyUp($event, 'userName')" />
+                <div class="text-danger" *ngIf="inValidUserName">Username is required</div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" class="form-control" type="password" name="password" placeholder="Password"
+                    (keyup)="onKeyUp($event, 'password')" />
+                <div class="text-danger" *ngIf="inValidPassword">Password is required</div>
+            </div>
+        </div>
+        <div class="col-lg-6 offset-lg-3">
+            <button class="btn btn-warning btn-block" type="button"
+                [disabled]="unUseUserName || unUsePassword" (click)="handleLogin($event)">Login</button>
+        </div>
+    </div>
+</div>

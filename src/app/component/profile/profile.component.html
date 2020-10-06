@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="card text-center">
+        <div class="card-header">
+            Welcome
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{firstName}} {{lastName}}</h5>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Email Id:</strong> {{emailId}}</li>
+                <li class="list-group-item"><strong>Mobile No:</strong> {{mobileNo}}</li>
+            </ul>
+
+        </div>
+        <div class="card-footer text-muted">
+            Your account created <strong>{{createdAt | date: 'LLL-dd-yyyy h:m:s a z'}}</strong>
+        </div>
+    </div>
+</div>
