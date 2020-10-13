@@ -1,0 +1,152 @@
+<app-navbar></app-navbar>
+<div *ngIf="loading">
+    <app-spinner></app-spinner>
+</div>
+<div class="container content-margin" *ngIf="!common.noInternet">
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-12">
+            <div class="det">
+                <h5 style="border-bottom: 2px solid black;">{{competionDetail.pro_title}}</h5>
+                <img src="{{competionDetail.image}}" class="s-img">
+                <div class="row">
+                    <div class="col-8">
+                        <h5 style="color: #D3C499;">only {{competionDetail.max_entry}} tickets</h5>
+                        <p>Cost per entry &pound;{{competionDetail.price}} <span
+                                *ngIf="competionDetail.discound_price !== ''">NOW
+                                &pound;{{competionDetail.dicount_price}}</span></p>
+                        <p style="font-size:13px;">Only 1 Winner in this Competition</p>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 p-0">
+                                    <div
+                                        *ngIf="days === '00' && hours === '00' && minutes === '00' && seconds === '00'">
+                                        <strong style="color: #EB4222;">SOLD OUT</strong>
+                                    </div>
+                                    <div class="counTimer"
+                                        *ngIf="days !== '00' || hours !== '00' || minutes !== '00' || seconds !== '00'">
+                                        <ul>
+                                            <li>
+                                                <div class="countDown_cont"><span>{{days}}</span></div>
+                                                <p>Days</p>
+                                            </li>
+                                            <li>
+                                                <div class="countDown_cont"><span>{{hours}}</span></div>
+                                                <p>Hours</p>
+                                            </li>
+                                            <li>
+                                                <div class="countDown_cont"><span>{{minutes}}</span></div>
+                                                <p>Min</p>
+                                            </li>
+                                            <li>
+                                                <div class="countDown_cont"><span>{{seconds}}</span></div>
+                                                <p>Sec</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <!-- Button to Open the Modal -->
+                        <span (click)="openAddToCart(addToCart)">
+                            <img src="assets/images/ds1.png" width="90px" class="img-fluid">
+                        </span>
+
+                        <!-- The Modal -->
+                        <ng-template #addToCart let-modal>
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h5 class="modal-title" *ngIf="Que_Ans.length > 0">
+                                    QUESTION
+                                </h5>
+                                <h5 class="modal-title" *ngIf="Que_Ans.length === 0">
+                                    SELECT QUANTITY
+                                </h5>
+                                <button type="button" style="color: white;" class="close"
+                                    (click)="modal.dismiss('Cross click')">&times;</button>
+                            </div>
+                            <form [formGroup]="form">
+                                <!-- Modal body -->
+                                <div class="modal-body" formArrayName="question_answer">
+                                    <div class="form-group" *ngFor="let QA of Que_Ans; let i = index;">
+                                        <div [formGroupName]="i">
+                                            <label style="color: #fff !important;">{{QA.question}}?</label>
+                                            <select class="form-control" formControlName="answer">
+                                                <option [value]="null" disabled>CHOOSE AN OPTION</option>
+                                                <option *ngFor="let opt of QA.options" value="{{opt}}_{{QA.q_id}}">
+                                                    {{opt}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal footer -->
+                                <!-- <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    </div> -->
+                                <div class="modal-footer">
+
+                                    <div class="row">
+                                        <div class="col-2" style="color: white !important;">QTY</div>
+                                        <div class="col-4">
+                                            <select class="form-control" formControlName="quantity">
+                                                <option *ngFor="let q of quantity" [value]="q">{{q}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <button class="atc" type="button"
+                                                (click)="onSubmit(competionDetail.pro_id, competionDetail.price)">
+                                                ADD TO CART
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-12">
+            <div class="det" *ngIf="competionDetail.description !== null">
+                <h5 style="color: #D3C499;">DESCRIPTION</h5>
+                <div class="text-dec-none desc-content ng-binding">
+                    <div [innerHtml]="competionDetail.description"></div>
+                </div>
+            </div>
+            <div class="det" *ngIf="competionDetail.specification !== null">
+                <h5 style="color: #D3C499;">PRIZE SPECIFICATIONS:</h5>
+                <div class="text-dec-none desc-content" [innerHtml]="competionDetail.specification"></div>
+            </div>
+            <div class="det" *ngIf="competionDetail.competition_details !== null">
+                <h5 style="color: #D3C499;">COMPETITION DETAILS</h5>
+                <div class="text-dec-none desc-content" [innerHtml]="competionDetail.competition_details">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<ng-template #alertModal let-modal>
+    <!-- Modal Header -->
+    <div class="modal-header">
+        <h5 class="modal-title">
+            Alert
+        </h5>
+        <button type="button" style="color: white;" class="close"
+            (click)="modal.dismiss('Cross click')">&times;</button>
+    </div>
+    <!-- Modal body -->
+    <div class="modal-body">
+        <h6>Competition Ends</h6>
+    </div>
+</ng-template>
+<!-- The Modal -->
+
+<div *ngIf="common.noInternet">
+    <app-internet></app-internet>
+</div>
