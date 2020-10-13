@@ -1,21 +1,41 @@
-<div class="container">
-    <h1 class="text-center">Register</h1>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input id="userName" class="form-control" type="text" name="userName" placeholder="Username" />
+<div class="wrapper" *ngIf="!common.noInternet">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+
+        <!-- Icon -->
+        <div>
+            <img src="assets/images/logo.png" id="icon" alt="User Icon" />
+        </div>
+
+        <!-- Email Form -->
+        <form style="padding-bottom: 5px;">
+            <input type="text" placeholder="Contact Name" value="{{contactName}}"
+                (keyup)="onKeyUp($event, 'contactName')" />
+            <div class="text-danger" *ngIf="inValidContactName">Contact name is required</div>
+            <input type="text" placeholder="Contact Number" value="{{contactNo}}"
+                (keyup)="onKeyUp($event, 'contactNo')" />
+            <div class="text-danger" *ngIf="inValidContactNo">Provide valid contact no</div>
+            <input type="email" placeholder="Email Id" value="{{emailId}}" (keyup)="onKeyUp($event, 'emailId')" />
+            <div class="text-danger" *ngIf="inValidEmailId">Provide valid email id</div>
+            <input type="password" placeholder="Password" value="{{password}}" (keyup)="onKeyUp($event, 'password')" />
+            <div class="text-danger" *ngIf="inValidPassword">Password is required</div>
+            <input type="button" (click)="handleRegister($event)" value="Register"
+                [disabled]="unUseContactName || unUsePassword || inValidEmailId || inValidPassword">
+            <a href="#" style="color: white;" [routerLink]="['/login']">Login</a>
+            <div class="note" style="color: white;">
+                <small>Note : your details are safe with us and will not be passed on</small>
             </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input id="password" class="form-control" type="password" name="password" placeholder="Password" />
-            </div>
-        </div>
-        <div class="col-lg-6 offset-lg-3">
-            <button class="btn btn-warning btn-block" type="button">Login</button>
-        </div>
+
+        </form>
+
+        <!-- Remind Passowrd -->
+        <!-- <div id="formFooter">
+            <a class="underlineHover" href="#">Forgot Password?</a>
+        </div> -->
+
     </div>
 </div>
 
+<div *ngIf="common.noInternet">
+    <app-internet></app-internet>
+</div>

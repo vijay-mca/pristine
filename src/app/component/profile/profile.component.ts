@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { API } from 'src/environments/api';
+import {
+  API,
+  AUTH_USERNAME,
+  AUTH_PASSWORD,
+  REQUEST_HEADER,
+} from 'src/environments/api';
+import { AuthService } from 'src/app/service/auth.service';
+import { CommonService } from 'src/app/service/common.service';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -14,45 +21,52 @@ export class ProfileComponent implements OnInit {
   createdAt: Date;
   updatedAt: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    public authService: AuthService,
+    private common: CommonService
+  ) {}
 
   ngOnInit(): void {
     this.getUserProfile();
+    this.authService.authenticateUser();
   }
 
   getUserProfile(): void {
-    const reg_id = localStorage.getItem('userToken');
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+    const member_id = this.common.getMemberId();
+    let headers = new HttpHeaders(REQUEST_HEADER);
+    let options = {
+      headers: headers,
+    };
+
+    const post = {
+      auth_username: AUTH_USERNAME,
+      auth_password: AUTH_PASSWORD,
+      action: 'MyAccount',
+      member_id,
+    };
+
+    let formBody: any = this.common.convertUrlEncoded(post);
+
+    this.http.post<any>(API, formBody, options).subscribe((res) => {
+      const { MemberDetails } = res;
+
+      if (MemberDetails.length !== '') {
+        const {
+          mem_name,
+          mem_lname,
+          email_id,
+          mobile_no,
+          added_date,
+          updated_date,
+        } = MemberDetails;
+        this.firstName = mem_name;
+        this.lastName = mem_lname;
+        this.emailId = email_id;
+        this.mobileNo = mobile_no;
+        this.createdAt = added_date;
+        this.updatedAt = updated_date;
+      }
     });
-    let options = { headers: headers };
-    this.http
-      .post<any>(
-        API,
-        {
-          action: 'My Profile',
-          reg_id: reg_id,
-        },
-        options
-      )
-      .subscribe((res) => {
-        const { status } = res;
-        if (status === 'success') {
-          const {
-            first_name,
-            last_name,
-            email_id,
-            mobile_no,
-            created_at,
-            updated_at,
-          } = res;
-          this.firstName = first_name;
-          this.lastName = last_name;
-          this.emailId = email_id;
-          this.mobileNo = mobile_no;
-          this.createdAt = created_at;
-          this.updatedAt = updated_at;
-        }
-      });
   }
 }

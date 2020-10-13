@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/service/auth.service';
+import { CommonService } from 'src/app/service/common.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,24 +9,24 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  public isMenuCollapsed: boolean = true;
-  public auth: boolean = false;
+  navClass: any;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    public authService: AuthService,
+    public common: CommonService
+  ) {}
 
   ngOnInit(): void {
-    if (localStorage.getItem('userToken') !== null) {
-      this.auth = true;
-      this.router.navigate(['profile']);
-    } else {
-      this.auth = false;
-    }
+    this.authService.authenticateUser();
+    this.common.cartRefresh();
   }
 
+
+
   logout(): void {
-    localStorage.removeItem('userToken');
+    localStorage.removeItem('member_id');
     this.router.navigate(['']);
-    this.auth = false;
-    this.isMenuCollapsed = true;
+    this.authService.authenticate = false;
   }
 }
